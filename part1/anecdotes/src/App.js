@@ -12,17 +12,30 @@ const App = () => {
   ]
   
   const [selected, setSelected] = useState(0)
-  const counter = new Array(anecdotes.length).fill(0)
-  const [points, setPoints] = useState(counter)
+  const startObject = {}
+  for (let i = 0; i < anecdotes.length; i++) {
+    startObject[i] = 0
+  }
+  const [points, setPoints] = useState(startObject)
 
   const randomSelect = () => {
-    setSelected(Math.floor(Math.random() * anecdotes.length))
+    const nextNum = Math.floor(Math.random() * anecdotes.length)
+    if (nextNum === selected) {
+      setSelected(nextNum + 1)
+    } else {
+      setSelected(nextNum)
+    }
   }
 
   const addVote = () => {
-    console.log(points)
-    const copy = [...points]
-    copy[selected] += 1
+    const copy = {
+      ...points,
+    }
+    if (copy[selected] === undefined) {
+      copy[selected] = 0
+    } else {
+      copy[selected] += 1
+    }
     setPoints(copy)
   }
 
