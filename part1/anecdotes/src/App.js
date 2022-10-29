@@ -17,6 +17,8 @@ const App = () => {
     startObject[i] = 0
   }
   const [points, setPoints] = useState(startObject)
+  const [mostVote, setMostVote] = useState(0)
+  const [mostVoteIndex, setMostVoteIndex] = useState(0)
 
   const randomSelect = () => {
     const nextNum = Math.floor(Math.random() * anecdotes.length)
@@ -31,20 +33,24 @@ const App = () => {
     const copy = {
       ...points,
     }
-    if (copy[selected] === undefined) {
-      copy[selected] = 0
-    } else {
-      copy[selected] += 1
+    copy[selected] += 1
+    if (copy[selected] > mostVote) {
+      setMostVote(copy[selected])
+      setMostVoteIndex(selected)
     }
     setPoints(copy)
   }
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>has {points[selected]} votes</p>
       <button onClick={addVote}>vote</button>
       <button onClick={randomSelect}>next anecdote</button>
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[mostVoteIndex]}</p>
+      <p>has {mostVote} votes</p>
     </div>
   )
 }
