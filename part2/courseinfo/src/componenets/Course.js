@@ -7,9 +7,14 @@ const Header = ({ header }) => {
 }
 
 const Content = ({ parts }) => {
+    const sum = parts.reduce((accumulator, object) => {
+        return accumulator + object.exercises
+    }, 0)
+
     return (
         <div>
           { parts.map(part => <Part name={part.name} number={part.exercises} />)}
+          <p><b>total of { sum } exercises </b></p>
         </div>
     )
 }
