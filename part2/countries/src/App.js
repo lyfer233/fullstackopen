@@ -17,7 +17,6 @@ const App = () => {
   }, [])
   
   const filterFunction = (event) => {
-    // console("Debug", event.target.value)
     const nowText = event.target.value
     // filter country
     const showResult = []
