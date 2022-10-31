@@ -23,14 +23,10 @@ const App = () => {
     const showResult = []
     const lowerText = nowText.toLowerCase()
 
-    countryList.every(country => {
+    countryList.forEach(country => {
       if (country.name.common.toLowerCase().includes(lowerText)) {
         showResult.push(country)
-        if (showResult.length > 10) {
-          return false
-        }
       }
-      return true
     })
 
     setResult(showResult)

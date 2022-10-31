@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Nation from './Nation'
 
 const Show = ({ resultList }) => {
     if (resultList.length === 0) {
@@ -7,20 +8,27 @@ const Show = ({ resultList }) => {
         )
     } else if (resultList.length === 1) {
         const country = resultList[0]
-        console.log(Object.entries(country.languages))
         return (
             <div>
                 <h2>{country.name.common}</h2>
-                <p>capital {country.capital} </p>
-                <p>area {country.area} </p>
-                <p><b>languages</b></p>
-                <ul>
-                    { Object.entries(country.languages).map((language, index) => <li key={index}>{language[1]}</li> ) }
-                </ul>
-                <img src={country.flags.png} alt="flag" />
+                <Nation capital={country.capital} area={country.area} languages={country.languages} flags={country.flags} />
             </div>
         )
     } else if (resultList.length <= 10) {
+        const tmpLst = new Array(resultList.length)
+        const [detailList, setDetailList] = useState(tmpLst)
+        const showNation = (index) => {
+            const updated = [...detailList]
+            console.log(updated)
+            updated[index] = <Nation 
+            capital={resultList[index].capital} 
+            area={resultList[index].area} 
+            languages={resultList[index].languages} 
+            flags={resultList[index].flags}
+            />
+
+            setDetailList(updated)
+        }
         const countryNameList = []
         resultList.forEach(countryObject => {
             countryNameList.push(countryObject.name.common)
@@ -28,7 +36,11 @@ const Show = ({ resultList }) => {
         return (
             <div>
                 <ul>
-                    { countryNameList.map((name, index) => <li key={index}>{name}</li>)}
+                    { 
+                      countryNameList.map((name, index) => {
+                        return <li key={index}> {name} <button onClick={() => {showNation(index)}}>show</button> {detailList[index]}</li>
+                      })
+                    }
                 </ul>
             </div>
         )
