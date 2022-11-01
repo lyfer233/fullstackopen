@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Filter  from './component/Filter'
 import PersonForm from './component/PersonForm'
 import Persons from './component/Persons'
-import React from 'react';
-import axois from 'axios'
+import connectService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,12 +10,11 @@ const App = () => {
   const [newNumber, setNumber] = useState('')
   const [findName, setFindName] = useState('')
 
+  // Get the data from the server.
   useEffect(() => {
-    axois
-      .get("http://localhost:3001/persons")
-      .then(response => {
-        setPersons(response.data)
-      })
+    connectService
+      .getData()
+      .then(data => setPersons(data))
   }, [])
   
   const addPerson = (event) => {
@@ -34,9 +32,13 @@ const App = () => {
         number: newNumber
       }
 
-      setPersons(persons.concat(personObject))
-      setNewName('')
-      setNumber('')
+      connectService
+      .addData(personObject)
+      .then(addedPerson => {
+        setPersons(persons.concat(addedPerson))
+        setNewName('')
+        setNumber('')
+      })
     }
   }
 
