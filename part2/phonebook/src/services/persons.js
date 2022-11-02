@@ -19,4 +19,10 @@ const deleteData = id => {
     return request
 }
 
-export default { getData, addData, deleteData }
+const replaceData = (id, newPerson) => {
+    const request = axois.put(`${baseUrl}/${id}`, newPerson)
+
+    return request.then(response => response.data)
+}
+
+export default { getData, addData, deleteData, replaceData }

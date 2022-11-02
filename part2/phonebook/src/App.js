@@ -20,25 +20,42 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
     let flag = true
+    let replacePerson = {}
+
     persons.forEach(person => {
       if (person.name === newName) {
-        alert(`${newName} is already added to phonebook`)
         flag = false
+        replacePerson = person
       }
     })
-    if (flag) {
-      const personObject = {
-        name: newName,
-        number: newNumber
-      }
 
+    const newPersonObject = {
+      name: newName,
+      number: newNumber,
+      id: persons.at(-1).id + 1
+    }
+
+    if (flag) {
       connectService
-      .addData(personObject)
-      .then(addedPerson => {
-        setPersons(persons.concat(addedPerson))
-        setNewName('')
-        setNumber('')
+        .addData(newPersonObject)
+        .then(addedPerson => {
+          setPersons(persons.concat(addedPerson))
+          setNewName('')
+          setNumber('')
       })
+    } else {
+      // Check whethe person information should update.
+      if(window.confirm(`${newPersonObject.name} is already in the phonebook, replace the old number with a new one?`)) {
+        
+        connectService
+          .replaceData(replacePerson.id, newPersonObject)
+          .then(updatedPerson => {
+            setPersons(persons.map(person => person.id === replacePerson.id ? updatedPerson : person))
+          })
+          .catch(error => {
+            alert('Warning! Update failed, Please check console')
+          })
+      }
     }
   }
 
