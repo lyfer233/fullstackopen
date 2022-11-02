@@ -70,7 +70,7 @@ const App = () => {
 
       <h3>Numbers</h3>
 
-      <Persons personList={filteredPersons}/>
+      <Persons personList={filteredPersons} />
     </div>
   )
 }

@@ -13,4 +13,10 @@ const addData = (willAddPerson) => {
     return request.then(response => response.data)
 }
 
-export default { getData, addData }
+const deleteData = id => {
+    const request = axois.delete(`${baseUrl}/${id}`)
+
+    return request
+}
+
+export default { getData, addData, deleteData }
