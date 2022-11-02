@@ -4,6 +4,7 @@ import PersonForm from './component/PersonForm'
 import Persons from './component/Persons'
 import connectService from './services/persons'
 import Notification from './component/Notification'
+import ErrorMessage from './component/ErrorMessage'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,6 +12,7 @@ const App = () => {
   const [newNumber, setNumber] = useState('')
   const [findName, setFindName] = useState('')
   const [tipMessage, setTipMessage] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
 
   // Get the data from the server.
   useEffect(() => {
@@ -57,7 +59,7 @@ const App = () => {
             setTipMessage(`Update ${updatedPerson.name} successful~`)
           })
           .catch(error => {
-            alert('Warning! Update failed, Please check console')
+            setErrorMsg(`Information of ${replacePerson.name} has already been removed from server!`)
           })
       }
     }
@@ -83,7 +85,9 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <Notification message={tipMessage}/>
+      <ErrorMessage message={errorMsg} />
+
+      <Notification message={tipMessage} />
 
       <Filter filterValue={findName} filterFunction={changeFindName} />
 
